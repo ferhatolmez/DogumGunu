@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -c effect.js)",
+      "Bash(curl -s -o /dev/null -w \"index.html: %{http_code}\\\\nflowers.css: %{http_code}\\\\neffect.js: %{http_code}\\\\n\" http://localhost:8081/index.html http://localhost:8081/flowers.css http://localhost:8081/effect.js)",
+      "Bash(curl -s http://localhost:8081/flowers.css)",
+      "Bash(curl -s http://localhost:8081/index.html)"
+    ]
+  }
+}
