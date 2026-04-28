@@ -1,422 +1,315 @@
 /* =========================================================
-   flowers.css — Sümeyye için pure CSS sahne efektleri
-   - Ayçiçeği bahçesi (sayfanın altında, sallanır)
-   - Düşen taç yaprakları
-   - Konfeti
-   - Yüzen kalpler
-   - Yıldızlı gece arka planı
+   flowers.css — Sümeyye için: Çiçek bahçesi, ışıklar, efektler
    ========================================================= */
 
-
-/* ====== AYÇİÇEĞİ BAHÇESİ ============================== */
-
-.sunflower-garden {
+/* ====== PERI IŞIKLARI — EN ÜSTTE ======================== */
+.fairy-lights {
   position: fixed;
-  bottom: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100%;
-  height: 280px;
+  height: 60px;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  padding: 0 10px;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+.fairy-lights.on { opacity: 1; }
+.fairy-lights.glow .fairy-bulb { animation: fairy-glow 1.8s ease-in-out infinite alternate; }
+
+.light-wire {
+  position: absolute;
+  top: 8px; left: 0;
+  width: 100%;
+  height: 3px;
+  background: #333;
+  border-radius: 2px;
+  z-index: 1;
+}
+.fairy-bulb {
+  position: relative;
+  top: 10px;
+  width: 14px; height: 20px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  z-index: 2;
+  opacity: 0.3;
+  transition: opacity 0.8s, box-shadow 0.8s;
+  flex-shrink: 0;
+}
+.fairy-lights.on .fairy-bulb { opacity: 1; }
+.fairy-bulb[data-color="pink"]  { background: radial-gradient(circle at 35% 35%, #ffb6d9, #ff5f8d); box-shadow: 0 0 8px #ff5f8d, 0 0 20px rgba(255,95,141,0.4); }
+.fairy-bulb[data-color="gold"]  { background: radial-gradient(circle at 35% 35%, #ffe89d, #ffa726); box-shadow: 0 0 8px #ffa726, 0 0 20px rgba(255,167,38,0.4); }
+.fairy-bulb[data-color="cyan"]  { background: radial-gradient(circle at 35% 35%, #b2ebf2, #26c6da); box-shadow: 0 0 8px #26c6da, 0 0 20px rgba(38,198,218,0.4); }
+
+@keyframes fairy-glow {
+  0%   { filter: brightness(0.6); }
+  50%  { filter: brightness(1.4); }
+  100% { filter: brightness(0.6); }
+}
+
+/* Her ampul farklı zamanlı */
+.fairy-bulb:nth-child(odd)  { animation-delay: 0s; }
+.fairy-bulb:nth-child(even) { animation-delay: 0.9s; }
+.fairy-bulb:nth-child(3n)   { animation-delay: 0.4s; }
+
+
+/* ====== ÇİÇEK BAHÇESİ — ALTTA ========================= */
+.flower-garden {
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;
+  height: 240px;
   pointer-events: none;
   z-index: 50;
   display: none;
   overflow: visible;
 }
-.sunflower-garden.show {
+.flower-garden.show {
   display: block;
   animation: garden-rise 2s ease-out;
 }
 @keyframes garden-rise {
-  0%   { transform: translateY(280px); opacity: 0; }
+  0%   { transform: translateY(240px); opacity: 0; }
   100% { transform: translateY(0);     opacity: 1; }
 }
 
-.sunflower {
+/* Çim zemin */
+.grass-strip {
   position: absolute;
-  bottom: 0;
-  width: 110px;
-  height: 280px;
+  bottom: 0; left: 0;
+  width: 100%; height: 40px;
+  background: linear-gradient(to top, #1b5e20, #388e3c 60%, transparent);
+  border-radius: 50% 50% 0 0 / 20px 20px 0 0;
+}
+
+/* Ortak çiçek */
+.flower {
+  position: absolute;
+  bottom: 30px;
+  width: 90px; height: 220px;
   transform-origin: bottom center;
-  animation: sway 4s ease-in-out infinite;
+  animation: flower-sway 4s ease-in-out infinite;
+}
+.flower:nth-child(1)  { animation-delay: 0s;    }
+.flower:nth-child(2)  { animation-delay: 0.5s;  }
+.flower:nth-child(3)  { animation-delay: 1.0s;  }
+.flower:nth-child(4)  { animation-delay: 0.3s;  }
+.flower:nth-child(5)  { animation-delay: 0.8s;  }
+.flower:nth-child(6)  { animation-delay: 1.2s;  }
+.flower:nth-child(7)  { animation-delay: 0.6s;  }
+.flower:nth-child(8)  { animation-delay: 0.2s;  }
+.flower:nth-child(9)  { animation-delay: 0.9s;  }
+.flower:nth-child(10) { animation-delay: 1.4s;  }
+
+@keyframes flower-sway {
+  0%   { transform: rotate(-2deg); }
+  50%  { transform: rotate(3deg);  }
+  100% { transform: rotate(-2deg); }
 }
 
-/* Kademeli konum ve gecikme — bir sıra ayçiçeği */
-.sunflower:nth-child(1) { left:  4%; animation-delay: 0s;   transform: scale(0.85); }
-.sunflower:nth-child(2) { left: 18%; animation-delay: 0.6s; transform: scale(1);    }
-.sunflower:nth-child(3) { left: 33%; animation-delay: 1.2s; transform: scale(0.9);  }
-.sunflower:nth-child(4) { left: 48%; animation-delay: 0.3s; transform: scale(1.05); }
-.sunflower:nth-child(5) { left: 63%; animation-delay: 0.9s; transform: scale(0.95); }
-.sunflower:nth-child(6) { left: 78%; animation-delay: 0.4s; transform: scale(0.88); }
-.sunflower:nth-child(7) { left: 90%; animation-delay: 1.5s; transform: scale(1);    }
-
-@keyframes sway {
-  0%   { transform: rotate(-3deg)  translateX(0); }
-  50%  { transform: rotate( 4deg)  translateX(2px); }
-  100% { transform: rotate(-3deg)  translateX(0); }
-}
-
-/* Sap (gövde) */
-.sunflower .stem {
+/* Ortak sap */
+.f-stem {
   position: absolute;
-  bottom: 0;
-  left: 50%;
+  bottom: 0; left: 50%;
   transform: translateX(-50%);
-  width: 8px;
-  height: 160px;
-  background: linear-gradient(to right, #2e7d32, #66bb6a, #2e7d32);
-  border-radius: 4px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  width: 6px; height: 140px;
+  background: linear-gradient(to right, #2e7d32, #4caf50, #2e7d32);
+  border-radius: 3px;
 }
 
-/* Yapraklar (sapın yanlarında) */
-.sunflower .leaf {
+/* Ortak yaprak */
+.f-leaf {
   position: absolute;
-  width: 50px;
-  height: 22px;
+  width: 36px; height: 16px;
   background: linear-gradient(135deg, #66bb6a, #2e7d32);
   border-radius: 50% 0 50% 0;
-  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
-.sunflower .leaf.left {
-  bottom: 60px;
-  left: calc(50% - 50px);
-  transform: rotate(-25deg);
-}
-.sunflower .leaf.right {
-  bottom: 80px;
-  left: 50%;
-  transform: rotate(25deg) scaleX(-1);
-}
+.f-leaf.left  { bottom: 70px; left: calc(50% - 40px); transform: rotate(-20deg); }
+.f-leaf.right { bottom: 90px; left: calc(50% + 4px);  transform: rotate(20deg) scaleX(-1); }
 
-/* Çiçek başı kapsayıcı — sapın üstüne oturuyor */
-.sunflower .head {
+
+/* ====== GÜL ============================================= */
+.rose-flower { width: 80px; height: 200px; }
+.rose-head {
   position: absolute;
-  bottom: 150px;
-  left: 50%;
+  bottom: 130px; left: 50%;
   transform: translateX(-50%);
-  width: 110px;
-  height: 110px;
+  width: 50px; height: 50px;
 }
-
-/* 12 sarı taç yaprağı — her biri 30 derece döndürülmüş */
-.sunflower .petal {
+.rose-petal {
   position: absolute;
-  top: 0;
-  left: 50%;
-  width: 26px;
-  height: 60px;
-  margin-left: -13px;
-  background: linear-gradient(to bottom, #ffd54f, #fb8c00);
-  border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
-  transform-origin: 50% 55px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.15);
-}
-.sunflower .petal:nth-child(1)  { transform: rotate(  0deg); }
-.sunflower .petal:nth-child(2)  { transform: rotate( 30deg); }
-.sunflower .petal:nth-child(3)  { transform: rotate( 60deg); }
-.sunflower .petal:nth-child(4)  { transform: rotate( 90deg); }
-.sunflower .petal:nth-child(5)  { transform: rotate(120deg); }
-.sunflower .petal:nth-child(6)  { transform: rotate(150deg); }
-.sunflower .petal:nth-child(7)  { transform: rotate(180deg); }
-.sunflower .petal:nth-child(8)  { transform: rotate(210deg); }
-.sunflower .petal:nth-child(9)  { transform: rotate(240deg); }
-.sunflower .petal:nth-child(10) { transform: rotate(270deg); }
-.sunflower .petal:nth-child(11) { transform: rotate(300deg); }
-.sunflower .petal:nth-child(12) { transform: rotate(330deg); }
-
-/* Çiçeğin merkezi (kahverengi tohum dokusu) */
-.sunflower .center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 50px;
-  height: 50px;
-  margin: -25px 0 0 -25px;
-  background:
-    radial-gradient(circle at 30% 30%, #6d4c41, #3e2723 70%),
-    radial-gradient(circle at 50% 50%, #4e342e, #2e1810);
   border-radius: 50%;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.6),
-              0 0 6px rgba(0,0,0,0.3);
 }
-.sunflower .center::after {
-  content: "";
+.rose-petal.r1 { width: 28px; height: 26px; top: 2px;  left: 11px; background: radial-gradient(circle at 40% 40%, #ff8fb1, #e91e63); }
+.rose-petal.r2 { width: 24px; height: 22px; top: 8px;  left: 0;    background: radial-gradient(circle at 40% 40%, #ff6f91, #c2185b); transform: rotate(-15deg); }
+.rose-petal.r3 { width: 24px; height: 22px; top: 8px;  right: 0;   background: radial-gradient(circle at 40% 40%, #ff6f91, #c2185b); transform: rotate(15deg); }
+.rose-petal.r4 { width: 20px; height: 20px; top: 16px; left: 4px;  background: radial-gradient(circle at 40% 40%, #f06292, #ad1457); transform: rotate(-25deg); }
+.rose-petal.r5 { width: 20px; height: 20px; top: 16px; right: 4px; background: radial-gradient(circle at 40% 40%, #f06292, #ad1457); transform: rotate(25deg); }
+.rose-center {
   position: absolute;
-  inset: 4px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, transparent 30%, rgba(0,0,0,0.25) 31%, transparent 32%) 0 0 / 8px 8px,
-    radial-gradient(circle, transparent 30%, rgba(0,0,0,0.25) 31%, transparent 32%) 4px 4px / 8px 8px;
-  opacity: 0.6;
-}
-
-/* ====== YENİ ÇİÇEK: ZAMBAK ============================= */
-.flower.lily {
-  position: absolute;
-  bottom: 0;
-  width: 100px;
-  height: 220px;
-  transform-origin: bottom center;
-  animation: sway 4.5s ease-in-out infinite;
-}
-.flower.lily .stem {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 6px;
-  height: 170px;
-  background: linear-gradient(to right, #4caf50, #2e7d32);
-  border-radius: 4px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.18);
-}
-.flower.lily .leaf {
-  position: absolute;
-  width: 42px;
-  height: 18px;
-  background: linear-gradient(135deg, #66bb6a, #2e7d32);
-  border-radius: 50% 0 50% 0;
-  box-shadow: 0 0 4px rgba(0,0,0,0.2);
-}
-.flower.lily .leaf.left {
-  bottom: 70px;
-  left: calc(50% - 52px);
-  transform: rotate(-15deg);
-}
-.flower.lily .leaf.right {
-  bottom: 90px;
-  left: 50%;
-  transform: rotate(15deg) scaleX(-1);
-}
-.flower.lily .bloom {
-  position: absolute;
-  bottom: 142px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95px;
-  height: 95px;
-}
-.flower.lily .petal {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 28px;
-  height: 72px;
-  margin-left: -14px;
-  background: linear-gradient(to bottom, #fff9f8, #ffe4e1);
-  border-radius: 60% 60% 50% 50% / 70% 70% 30% 30%;
-  transform-origin: 50% 54px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.12);
-}
-.flower.lily .petal:nth-child(1)  { transform: rotate(  0deg); }
-.flower.lily .petal:nth-child(2)  { transform: rotate( 60deg); }
-.flower.lily .petal:nth-child(3)  { transform: rotate(120deg); }
-.flower.lily .petal:nth-child(4)  { transform: rotate(180deg); }
-.flower.lily .petal:nth-child(5)  { transform: rotate(240deg); }
-.flower.lily .petal:nth-child(6)  { transform: rotate(300deg); }
-.flower.lily .stamen {
-  position: absolute;
-  top: 24px;
-  left: 50%;
-  width: 14px;
-  height: 14px;
+  top: 12px; left: 50%;
+  width: 14px; height: 14px;
   margin-left: -7px;
-  background: radial-gradient(circle, #ff8f00 0%, #ffc107 100%);
+  background: radial-gradient(circle, #ff1744, #b71c1c);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(255,183,77,0.7);
+  box-shadow: 0 0 8px rgba(255,23,68,0.5);
+}
+/* Kırmızı gül varyasyonu */
+.rose-red .rose-petal.r1 { background: radial-gradient(circle at 40% 40%, #ef5350, #b71c1c); }
+.rose-red .rose-petal.r2,
+.rose-red .rose-petal.r3 { background: radial-gradient(circle at 40% 40%, #e53935, #c62828); }
+.rose-red .rose-petal.r4,
+.rose-red .rose-petal.r5 { background: radial-gradient(circle at 40% 40%, #d32f2f, #8e0000); }
+.rose-red .rose-center    { background: radial-gradient(circle, #ff5252, #d50000); }
+
+
+/* ====== AYÇİÇEĞİ ======================================= */
+.sunflower-v2 { width: 100px; height: 230px; }
+.sf-head {
+  position: absolute;
+  bottom: 130px; left: 50%;
+  transform: translateX(-50%);
+  width: 90px; height: 90px;
+}
+.sf-petal {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 20px; height: 42px;
+  margin-left: -10px;
+  background: linear-gradient(to bottom, #ffd54f, #f57f17);
+  border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+  transform-origin: 50% 45px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.12);
+}
+.sf-petal:nth-child(1)  { transform: rotate(  0deg); }
+.sf-petal:nth-child(2)  { transform: rotate( 30deg); }
+.sf-petal:nth-child(3)  { transform: rotate( 60deg); }
+.sf-petal:nth-child(4)  { transform: rotate( 90deg); }
+.sf-petal:nth-child(5)  { transform: rotate(120deg); }
+.sf-petal:nth-child(6)  { transform: rotate(150deg); }
+.sf-petal:nth-child(7)  { transform: rotate(180deg); }
+.sf-petal:nth-child(8)  { transform: rotate(210deg); }
+.sf-petal:nth-child(9)  { transform: rotate(240deg); }
+.sf-petal:nth-child(10) { transform: rotate(270deg); }
+.sf-petal:nth-child(11) { transform: rotate(300deg); }
+.sf-petal:nth-child(12) { transform: rotate(330deg); }
+.sf-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 38px; height: 38px;
+  margin: -19px 0 0 -19px;
+  background: radial-gradient(circle at 35% 35%, #6d4c41, #3e2723);
+  border-radius: 50%;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
 }
 
-/* ====== KÜÇÜK PRENS KARAKTERİ ========================= */
-.little-prince {
+
+/* ====== LALE ============================================ */
+.tulip-flower { width: 70px; height: 200px; }
+.tulip-head {
   position: absolute;
-  right: 20px;
-  bottom: 20px;
-  width: 230px;
-  height: 320px;
-  z-index: 70;
-  pointer-events: none;
-  animation: prince-appear 1.6s ease-out 0.8s forwards;
-  opacity: 0;
-  transform: translateY(20px) scale(0.9);
+  bottom: 130px; left: 50%;
+  transform: translateX(-50%);
+  width: 40px; height: 46px;
 }
-@keyframes prince-appear {
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-.lp-planet {
+.tulip-petal {
   position: absolute;
   bottom: 0;
-  left: 50%;
-  width: 220px;
-  height: 140px;
+  border-radius: 50% 50% 5px 5px;
+}
+.tulip-petal.tp-left   { left: 0;  width: 18px; height: 40px; }
+.tulip-petal.tp-right  { right: 0; width: 18px; height: 40px; }
+.tulip-petal.tp-center { left: 50%; width: 16px; height: 46px; margin-left: -8px; }
+/* Kırmızı lale */
+.tulip-red .tp-left   { background: linear-gradient(to top, #c62828, #ef5350); }
+.tulip-red .tp-right  { background: linear-gradient(to top, #b71c1c, #e53935); }
+.tulip-red .tp-center { background: linear-gradient(to top, #d32f2f, #ff5252); }
+/* Sarı lale */
+.tulip-yellow .tp-left   { background: linear-gradient(to top, #f9a825, #ffee58); }
+.tulip-yellow .tp-right  { background: linear-gradient(to top, #f57f17, #fdd835); }
+.tulip-yellow .tp-center { background: linear-gradient(to top, #fbc02d, #fff176); }
+
+
+/* ====== PAPATYA ========================================= */
+.daisy-flower { width: 80px; height: 190px; }
+.daisy-head {
+  position: absolute;
+  bottom: 130px; left: 50%;
   transform: translateX(-50%);
-  background: radial-gradient(circle at 40% 35%, #f9d08e, #e2b07c 52%, #b48d5a 100%);
-  border-radius: 50% 50% 45% 45%;
-  box-shadow: inset 0 12px 20px rgba(255,255,255,0.45), 0 10px 30px rgba(0,0,0,0.15);
+  width: 70px; height: 70px;
 }
-.lp-baobab {
+.daisy-petal {
   position: absolute;
-  bottom: 70px;
-  width: 18px;
-  height: 90px;
-  background: linear-gradient(to right, #5d4037, #3e2723);
-  border-radius: 16px;
+  top: 0; left: 50%;
+  width: 14px; height: 32px;
+  margin-left: -7px;
+  background: linear-gradient(to bottom, #fff, #e8eaf6);
+  border-radius: 50%;
+  transform-origin: 50% 35px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.08);
 }
-.lp-baobab.one {
-  left: 42px;
-  transform: rotate(-8deg);
-}
-.lp-baobab.two {
-  left: 92px;
-  transform: rotate(12deg);
-}
-.lp-rose {
+.daisy-petal:nth-child(1) { transform: rotate(  0deg); }
+.daisy-petal:nth-child(2) { transform: rotate( 45deg); }
+.daisy-petal:nth-child(3) { transform: rotate( 90deg); }
+.daisy-petal:nth-child(4) { transform: rotate(135deg); }
+.daisy-petal:nth-child(5) { transform: rotate(180deg); }
+.daisy-petal:nth-child(6) { transform: rotate(225deg); }
+.daisy-petal:nth-child(7) { transform: rotate(270deg); }
+.daisy-petal:nth-child(8) { transform: rotate(315deg); }
+.daisy-center {
   position: absolute;
-  bottom: 72px;
-  left: 140px;
-  width: 26px;
-  height: 90px;
+  top: 50%; left: 50%;
+  width: 22px; height: 22px;
+  margin: -11px 0 0 -11px;
+  background: radial-gradient(circle at 40% 40%, #ffd54f, #ff8f00);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255,152,0,0.4);
 }
-.lp-rose-stem {
+
+
+/* ====== ORKİDE ========================================== */
+.orchid-flower { width: 80px; height: 200px; }
+.orchid-head {
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 4px;
-  height: 72px;
-  background: linear-gradient(to right, #388e3c, #2e7d32);
+  bottom: 130px; left: 50%;
   transform: translateX(-50%);
+  width: 60px; height: 60px;
 }
-.lp-rose-bud {
+.orchid-petal {
   position: absolute;
-  top: 0;
-  left: 50%;
-  width: 34px;
-  height: 26px;
-  margin-left: -17px;
-  background: radial-gradient(circle at 40% 40%, #ff6f91, #c2185b);
-  border-radius: 50% 50% 45% 45%;
-  box-shadow: 0 0 12px rgba(255,111,145,0.4);
-}
-.lp-character {
-  position: absolute;
-  bottom: 120px;
-  left: 50%;
-  width: 160px;
-  height: 210px;
-  transform: translateX(-50%);
-}
-.lp-hair {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 74px;
-  height: 44px;
-  margin-left: -37px;
-  background: linear-gradient(135deg, #fdd835, #fbc02d);
-  border-radius: 50% 50% 45% 45%;
-  box-shadow: inset 0 8px 0 rgba(0,0,0,0.08);
-}
-.lp-face {
-  position: absolute;
-  top: 32px;
-  left: 50%;
-  width: 72px;
-  height: 78px;
-  margin-left: -36px;
-  background: #ffe7c7;
-  border-radius: 42px;
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.7);
-}
-.lp-eye {
-  position: absolute;
-  top: 30px;
-  width: 8px;
-  height: 8px;
-  background: #524c4b;
   border-radius: 50%;
 }
-.lp-eye.left {
-  left: 18px;
-}
-.lp-eye.right {
-  right: 18px;
-}
-.lp-mouth {
+.orchid-petal.op1 { width: 28px; height: 22px; top: 0;    left: 50%; margin-left: -14px; background: linear-gradient(135deg, #ce93d8, #7b1fa2); }
+.orchid-petal.op2 { width: 22px; height: 28px; top: 10px; left: 0;   background: linear-gradient(135deg, #ba68c8, #6a1b9a); transform: rotate(-30deg); }
+.orchid-petal.op3 { width: 22px; height: 28px; top: 10px; right: 0;  background: linear-gradient(135deg, #ba68c8, #6a1b9a); transform: rotate(30deg); }
+.orchid-petal.op4 { width: 18px; height: 24px; bottom: 0; left: 8px; background: linear-gradient(135deg, #ab47bc, #4a148c); transform: rotate(-15deg); }
+.orchid-petal.op5 { width: 18px; height: 24px; bottom: 0; right: 8px;background: linear-gradient(135deg, #ab47bc, #4a148c); transform: rotate(15deg); }
+.orchid-center {
   position: absolute;
-  bottom: 16px;
-  left: 50%;
-  width: 20px;
-  height: 8px;
-  border-bottom: 2px solid #524c4b;
-  border-radius: 0 0 12px 12px;
-  transform: translateX(-50%);
+  top: 50%; left: 50%;
+  width: 14px; height: 14px;
+  margin: -7px 0 0 -7px;
+  background: radial-gradient(circle, #ffeb3b, #ff9800);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255,235,59,0.6);
 }
-.lp-scarf {
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  width: 86px;
-  height: 18px;
-  margin-left: -43px;
-  background: linear-gradient(135deg, #f06292, #ab47bc);
-  border-radius: 12px;
-}
-.lp-jacket {
-  position: absolute;
-  top: 100px;
-  left: 50%;
-  width: 80px;
-  height: 90px;
-  margin-left: -40px;
-  background: linear-gradient(180deg, #2196f3, #1565c0);
-  border-radius: 20px 20px 14px 14px;
-}
-.lp-arm {
-  position: absolute;
-  top: 110px;
-  width: 16px;
-  height: 64px;
-  background: #ffe7c7;
-  border-radius: 12px;
-}
-.lp-arm.left {
-  left: 10px;
-  transform: rotate(-14deg);
-}
-.lp-arm.right {
-  right: 10px;
-  transform: rotate(12deg);
-}
-.lp-pants {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 44px;
-  height: 38px;
-  margin-left: -22px;
-  background: #4fc3f7;
-  border-radius: 12px 12px 6px 6px;
-}
-.lp-boots {
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  width: 64px;
-  height: 20px;
-  margin-left: -32px;
-  background: #6d4c41;
-  border-radius: 12px;
-}
+/* Pembe orkide varyasyonu */
+.orchid-pink .orchid-petal.op1 { background: linear-gradient(135deg, #f48fb1, #e91e63); }
+.orchid-pink .orchid-petal.op2,
+.orchid-pink .orchid-petal.op3 { background: linear-gradient(135deg, #f06292, #c2185b); }
+.orchid-pink .orchid-petal.op4,
+.orchid-pink .orchid-petal.op5 { background: linear-gradient(135deg, #ec407a, #880e4f); }
+
 
 /* ====== DÜŞEN TAÇ YAPRAKLARI =========================== */
-
 .petal-fall {
   position: fixed;
   top: -40px;
-  width: 18px;
-  height: 28px;
-  background: linear-gradient(to bottom, #ffd54f, #fb8c00);
+  width: 16px; height: 24px;
   border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
   opacity: 0.85;
   z-index: 80;
@@ -424,20 +317,17 @@
   animation: petal-drop linear infinite;
 }
 @keyframes petal-drop {
-  0%   { transform: translate(0, 0)        rotate(0deg);   opacity: 0.9; }
-  50%  { transform: translate(40px, 50vh)  rotate(180deg); opacity: 0.85; }
+  0%   { transform: translate(0, 0) rotate(0deg);          opacity: 0.9; }
+  50%  { transform: translate(40px, 50vh) rotate(180deg);   opacity: 0.8; }
   100% { transform: translate(-30px, 110vh) rotate(360deg); opacity: 0; }
 }
 
 
 /* ====== KONFETİ ======================================== */
-
 .confetti {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 14px;
+  top: 50%; left: 50%;
+  width: 10px; height: 14px;
   z-index: 200;
   pointer-events: none;
   opacity: 0.95;
@@ -450,12 +340,10 @@
 
 
 /* ====== YÜZEN KALPLER ================================== */
-
 .heart-float {
   position: fixed;
   bottom: -40px;
-  width: 26px;
-  height: 24px;
+  width: 26px; height: 24px;
   z-index: 150;
   pointer-events: none;
   opacity: 0;
@@ -466,49 +354,39 @@
   content: "";
   position: absolute;
   top: 0;
-  width: 16px;
-  height: 22px;
+  width: 16px; height: 22px;
   background: linear-gradient(135deg, #ff5f8d, #ff2c5f);
   border-radius: 12px 12px 0 0;
   box-shadow: 0 0 8px rgba(255,80,120,0.5);
 }
-.heart-float::before {
-  left: 0;
-  transform: rotate(-45deg);
-  transform-origin: 0 100%;
-}
-.heart-float::after {
-  right: 0;
-  transform: rotate(45deg);
-  transform-origin: 100% 100%;
-}
+.heart-float::before { left: 0; transform: rotate(-45deg); transform-origin: 0 100%; }
+.heart-float::after  { right: 0; transform: rotate(45deg);  transform-origin: 100% 100%; }
 @keyframes heart-rise {
-  0%   { transform: translate(0, 0)        scale(0.6); opacity: 0; }
+  0%   { transform: translate(0, 0) scale(0.6);              opacity: 0; }
   10%  { opacity: 1; }
-  50%  { transform: translate(30px, -50vh) scale(1);   opacity: 0.9; }
-  100% { transform: translate(-20px, -110vh) scale(0.8); opacity: 0; }
+  50%  { transform: translate(30px, -50vh) scale(1);          opacity: 0.9; }
+  100% { transform: translate(-20px, -110vh) scale(0.8);      opacity: 0; }
 }
 
 
 /* ====== YILDIZLI GECE ================================== */
-
 body.starry-night {
-  background-color: #0d0e2a !important;
+  background-color: #0a0e27 !important;
   background-image:
-    radial-gradient(2px 2px at 10% 20%,  #fff,           transparent),
-    radial-gradient(2px 2px at 25% 60%,  #fff,           transparent),
-    radial-gradient(1px 1px at 40% 30%,  #ffe082,        transparent),
-    radial-gradient(2px 2px at 55% 75%,  #fff,           transparent),
-    radial-gradient(1px 1px at 70% 15%,  #ffe082,        transparent),
-    radial-gradient(2px 2px at 85% 50%,  #fff,           transparent),
-    radial-gradient(1.5px 1.5px at 95% 80%, #fff,        transparent),
-    radial-gradient(1px 1px at 15% 85%,  #ffe082,        transparent),
-    radial-gradient(2px 2px at 60% 40%,  #fff,           transparent),
-    radial-gradient(1px 1px at 35% 90%,  #fff,           transparent),
-    radial-gradient(2px 2px at 78% 25%,  #fff,           transparent),
-    radial-gradient(1px 1px at 5%  55%,  #ffe082,        transparent),
-    radial-gradient(2px 2px at 50% 10%,  #fff,           transparent),
-    radial-gradient(1px 1px at 90% 35%,  #fff,           transparent);
+    radial-gradient(2px 2px at 10% 20%, #fff, transparent),
+    radial-gradient(2px 2px at 25% 60%, #fff, transparent),
+    radial-gradient(1px 1px at 40% 30%, #ffe082, transparent),
+    radial-gradient(2px 2px at 55% 75%, #fff, transparent),
+    radial-gradient(1px 1px at 70% 15%, #ffe082, transparent),
+    radial-gradient(2px 2px at 85% 50%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 95% 80%, #fff, transparent),
+    radial-gradient(1px 1px at 15% 85%, #ffe082, transparent),
+    radial-gradient(2px 2px at 60% 40%, #fff, transparent),
+    radial-gradient(1px 1px at 35% 90%, #fff, transparent),
+    radial-gradient(2px 2px at 78% 25%, #fff, transparent),
+    radial-gradient(1px 1px at 5% 55%, #ffe082, transparent),
+    radial-gradient(2px 2px at 50% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 90% 35%, #fff, transparent);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   animation: twinkle 4s ease-in-out infinite alternate;
@@ -522,40 +400,50 @@ body.starry-night {
 
 
 /* ====== TYPEWRITER MESAJ STİLİ ========================= */
-
 .message.typewriter-mode p {
-  font-family: 'Dancing Script', 'Signika', cursive, sans-serif !important;
+  font-family: 'Great Vibes', 'Dancing Script', cursive !important;
   text-transform: none !important;
-  font-size: 36px !important;
+  font-size: 32px !important;
   letter-spacing: 0.5px;
   color: #ffe9c4 !important;
-  text-shadow: 0 0 12px rgba(255, 200, 120, 0.5),
-               0 0 4px rgba(255,255,255,0.3) !important;
+  text-shadow: 0 0 12px rgba(255,200,120,0.5), 0 0 4px rgba(255,255,255,0.3) !important;
   margin: 8px 0;
+  line-height: 1.5;
 }
 .message.typewriter-mode p.signature {
-  font-family: 'Dancing Script', cursive !important;
+  font-family: 'Great Vibes', cursive !important;
   color: #ff8fb1 !important;
   font-size: 42px !important;
   text-shadow: 0 0 15px rgba(255,143,177,0.7) !important;
 }
+.message.typewriter-mode p.poem {
+  font-style: italic;
+  color: #ffe082 !important;
+  font-size: 34px !important;
+  text-shadow: 0 0 18px rgba(255,224,130,0.7), 0 0 6px rgba(255,255,255,0.4) !important;
+  padding: 8px 20px;
+  border-left: 3px solid rgba(255,224,130,0.5);
+  margin: 14px auto;
+  max-width: 90%;
+}
+.message p.poem {
+  font-style: italic;
+  color: #9c27b0 !important;
+  border-left: 3px solid rgba(156,39,176,0.4);
+  padding-left: 16px;
+}
 
 
-/* ====== PASTA ÜZERİ "S♥" YAZISI ======================== */
-
+/* ====== PASTA ÜZERİ ===================================== */
 .cake-topper {
   position: absolute;
-  top: -30px;
-  left: 50%;
+  top: -30px; left: 50%;
   transform: translateX(-50%);
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 38px;
   font-weight: 700;
   color: #ff5f8d;
-  text-shadow:
-    0 0 10px rgba(255,143,177,0.9),
-    0 0 20px rgba(255,143,177,0.6),
-    0 0 30px rgba(255,143,177,0.4);
+  text-shadow: 0 0 10px rgba(255,143,177,0.9), 0 0 20px rgba(255,143,177,0.6);
   z-index: 20;
   animation: topper-pulse 1.6s ease-in-out infinite;
   white-space: nowrap;
@@ -566,270 +454,93 @@ body.starry-night {
 }
 
 
-/* ====== BALON HARF RENK PALETİ İNCELTİME =============== */
-
-/* Sümeyye paleti - sıcak pastel */
+/* ====== BALON HARF ====================================== */
 .balloons h2 {
   font-size: 50px;
-  text-shadow: 3px 3px 6px rgba(255,255,255,0.6),
-               0 0 12px rgba(255,255,255,0.4);
+  text-shadow: 3px 3px 6px rgba(255,255,255,0.6), 0 0 12px rgba(255,255,255,0.4);
 }
 
 
-/* ====== BUTON SOFT GLOW ================================ */
-
-.btn-custom {
-  background: linear-gradient(135deg, #ff8fb1, #ff5f8d) !important;
-  border-color: #ff5f8d !important;
-  box-shadow: 0 8px 18px rgba(255,95,141,0.35) !important;
+/* ====== BUTONLAR ======================================== */
+.btn-magic {
+  display: none;
+  background: linear-gradient(135deg, #ff8fb1, #ff5f8d);
+  border: none;
+  color: #fff;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 50px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  box-shadow: 0 6px 20px rgba(255,95,141,0.4);
+  transition: all 0.3s ease;
+  margin: 6px;
 }
-.btn-custom:hover {
-  background: linear-gradient(135deg, #ffd54f, #fb8c00) !important;
-  border-color: #fb8c00 !important;
-  box-shadow: 0 12px 24px rgba(251,140,0,0.45),
-              0 0 20px rgba(255,213,79,0.6) !important;
-  transform: scale(1.06) !important;
+.btn-magic .btn-icon { margin-right: 6px; font-size: 18px; }
+.btn-magic:hover {
+  background: linear-gradient(135deg, #ffd54f, #fb8c00);
+  box-shadow: 0 8px 28px rgba(251,140,0,0.5), 0 0 16px rgba(255,213,79,0.5);
+  transform: translateY(-2px) scale(1.04);
+}
+.btn-magic:active { transform: translateY(0) scale(0.98); }
+#turn_on { display: inline-block; }
+
+/* Alt panel */
+.control-panel-wrapper {
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;
+  padding: 12px 10px;
+  text-align: center;
+  z-index: 10000;
+  background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
 }
 
 
 /* ====== MOBİL UYARLAMA ================================= */
-
-/* Tablet ve altı */
 @media (max-width: 720px) {
-  /* Ayçiçekleri küçült, bazılarını gizle */
-  .sunflower {
-    transform: scale(0.55) !important;
-  }
-  .sunflower:nth-child(2),
-  .sunflower:nth-child(6) {
-    display: none;
-  }
-  .sunflower-garden {
-    height: 200px;
-  }
+  .flower { transform: scale(0.6) !important; }
+  .flower:nth-child(3), .flower:nth-child(7) { display: none; }
+  .flower-garden { height: 180px; }
+  .fairy-bulb { width: 10px; height: 14px; }
 
-  /* Mesaj fontu */
-  .message.typewriter-mode p {
-    font-size: 22px !important;
-    line-height: 1.4;
-    margin: 6px 8px !important;
-  }
-  .message.typewriter-mode p.signature {
-    font-size: 28px !important;
-  }
+  .message.typewriter-mode p { font-size: 22px !important; line-height: 1.4; margin: 6px 10px !important; }
+  .message.typewriter-mode p.signature { font-size: 28px !important; }
+  .cake-topper { font-size: 26px; top: -22px; }
+  .cake { transform: scale(0.7); transform-origin: top center; }
 
-  /* Pasta üzerindeki yazı */
-  .cake-topper {
-    font-size: 26px;
-    top: -22px;
-  }
+  .balloons { width: 60px !important; height: 110px !important; background-size: 60px 110px !important; }
+  .balloons h2 { font-size: 28px !important; }
 
-  /* Pasta boyutu */
-  .cake {
-    transform: scale(0.7);
-    transform-origin: top center;
-  }
+  .bannar { max-width: 85% !important; }
 
-  /* Balonlar daha küçük */
-  .balloons {
-    width: 60px !important;
-    height: 110px !important;
-    background-size: 60px 110px !important;
-  }
-  .balloons h2 {
-    font-size: 28px !important;
-  }
-
-  /* Ampuller */
-  .bulb {
-    width: 32px !important;
-    height: 32px !important;
-    background-size: 32px 32px !important;
-  }
-  .bulb-holder {
-    height: 50px !important;
-  }
-
-  /* Banner */
-  .bannar {
-    max-width: 85% !important;
-  }
-
-  /* Butonlar — mobilde daha kompakt */
-  .btn-custom {
-    font-size: 16px !important;
-    padding: 12px 24px !important;
-    border-radius: 24px !important;
-    letter-spacing: 0.5px !important;
-  }
-  .navbar.navbar-fixed-bottom {
-    padding: 8px 0 !important;
-    border: none !important;
-    background: transparent !important;
-  }
-  .navbar .row > div {
-    padding-left: 5px !important;
-    padding-right: 5px !important;
-  }
-
-  /* Mesaj container'ı mobilde daha az margin */
-  .message {
-    margin-top: 80px !important;
-    padding: 0 10px;
-  }
-
-  /* Eski mesaj p stilleri (typewriter-mode aktif değilken) */
-  .message p {
-    font-size: 18px !important;
-  }
-
-  /* Yeni lale ve Küçük Prens mobil desteği */
-  .flower.lily {
-    transform: scale(0.7) !important;
-    left: 88% !important;
-  }
-  .little-prince {
-    width: 170px !important;
-    height: 240px !important;
-    right: 12px !important;
-    bottom: 12px !important;
-  }
-  .lp-planet {
-    width: 160px !important;
-    height: 110px !important;
-  }
-  .lp-character {
-    width: 122px !important;
-    height: 170px !important;
-    bottom: 108px !important;
-  }
-  .lp-face {
-    width: 56px !important;
-    height: 62px !important;
-    top: 28px !important;
-  }
-  .lp-scarf {
-    width: 68px !important;
-  }
-  .lp-jacket {
-    width: 64px !important;
-    height: 70px !important;
-  }
-  .lp-pants {
-    width: 34px !important;
-    height: 30px !important;
-  }
-  .lp-boots {
-    width: 52px !important;
-    height: 16px !important;
-    bottom: -2px !important;
-  }
+  .btn-magic { font-size: 15px !important; padding: 11px 22px !important; }
+  .message { margin-top: 80px !important; padding: 0 10px; }
+  .message p { font-size: 18px !important; }
 }
 
-/* Küçük telefonlar (iPhone SE vb.) */
 @media (max-width: 420px) {
-  .sunflower {
-    transform: scale(0.45) !important;
-  }
-  .sunflower:nth-child(4) {
-    display: none;
-  }
-  .sunflower-garden {
-    height: 170px;
-  }
+  .flower { transform: scale(0.45) !important; }
+  .flower:nth-child(5), .flower:nth-child(9) { display: none; }
+  .flower-garden { height: 150px; }
+  .fairy-bulb { width: 8px; height: 12px; }
 
-  .message.typewriter-mode p {
-    font-size: 19px !important;
-  }
-  .message.typewriter-mode p.signature {
-    font-size: 24px !important;
-  }
-  .message p {
-    font-size: 16px !important;
-  }
+  .message.typewriter-mode p { font-size: 19px !important; }
+  .message.typewriter-mode p.signature { font-size: 24px !important; }
+  .message p { font-size: 16px !important; }
+  .cake { transform: scale(0.6); }
+  .cake-topper { font-size: 22px; top: -18px; }
 
-  .cake {
-    transform: scale(0.6);
-  }
-  .cake-topper {
-    font-size: 22px;
-    top: -18px;
-  }
+  .balloons { width: 50px !important; height: 92px !important; background-size: 50px 92px !important; }
+  .balloons h2 { font-size: 22px !important; }
 
-  .balloons {
-    width: 50px !important;
-    height: 92px !important;
-    background-size: 50px 92px !important;
-  }
-  .balloons h2 {
-    font-size: 22px !important;
-  }
-
-  .bulb {
-    width: 26px !important;
-    height: 26px !important;
-    background-size: 26px 26px !important;
-  }
-  .bulb-holder {
-    height: 42px !important;
-  }
-
-  .btn-custom {
-    font-size: 14px !important;
-    padding: 10px 18px !important;
-  }
-
-  .message {
-    margin-top: 60px !important;
-  }
-
-  .flower.lily {
-    transform: scale(0.55) !important;
-    left: 82% !important;
-  }
-  .little-prince {
-    width: 136px !important;
-    height: 195px !important;
-    right: 8px !important;
-    bottom: 10px !important;
-  }
-  .lp-planet {
-    width: 130px !important;
-    height: 96px !important;
-  }
-  .lp-character {
-    width: 106px !important;
-    height: 146px !important;
-    bottom: 96px !important;
-  }
-  .lp-face {
-    width: 44px !important;
-    height: 52px !important;
-    top: 24px !important;
-  }
-  .lp-scarf {
-    width: 56px !important;
-  }
-  .lp-jacket {
-    width: 50px !important;
-    height: 56px !important;
-  }
-  .lp-pants {
-    width: 28px !important;
-    height: 24px !important;
-  }
-  .lp-boots {
-    width: 44px !important;
-    height: 14px !important;
-  }
+  .btn-magic { font-size: 13px !important; padding: 10px 16px !important; }
+  .message { margin-top: 60px !important; }
 }
 
-/* Yatay (landscape) kısa ekran — yeterli dikey alan yoksa */
 @media (max-height: 500px) and (max-width: 900px) {
-  .message {
-    margin-top: 30px !important;
-  }
-  .cake {
-    transform: scale(0.55);
-  }
+  .message { margin-top: 30px !important; }
+  .cake { transform: scale(0.55); }
 }

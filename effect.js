@@ -12,6 +12,14 @@ var SUMEYYE_PALETTE = [
 	'#42A5F5', '#66BB6A', '#EC407A', '#FFB6C1', '#AB47BC'
 ];
 
+var PETAL_COLORS = [
+	'linear-gradient(to bottom, #ffd54f, #fb8c00)',
+	'linear-gradient(to bottom, #ff8fb1, #e91e63)',
+	'linear-gradient(to bottom, #ce93d8, #7b1fa2)',
+	'linear-gradient(to bottom, #fff, #e8eaf6)',
+	'linear-gradient(to bottom, #ef5350, #c62828)'
+];
+
 function spawnConfetti() {
 	for (var i = 0; i < 60; i++) {
 		var endX = Math.floor((Math.random() * 900) - 450);
@@ -52,12 +60,13 @@ function spawnHearts(count) {
 }
 
 function startPetalRain() {
-	for (var i = 0; i < 14; i++) {
+	for (var i = 0; i < 18; i++) {
 		var p = document.createElement('div');
 		p.className = 'petal-fall';
 		p.style.left = (Math.random() * 100) + 'vw';
 		p.style.animationDuration = (8 + Math.random() * 6) + 's';
 		p.style.animationDelay = (Math.random() * 5) + 's';
+		p.style.background = PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
 		document.body.appendChild(p);
 	}
 }
@@ -66,12 +75,11 @@ function startPetalRain() {
    Sahne akışı
    ============================================================== */
 
-/* Mobile/desktop'a göre balon yan yana dizilim — sığmayı garantiler */
 function balloonSpacing() {
 	var w = $(window).width();
-	if (w < 420) return 42;   /* küçük telefon */
-	if (w < 720) return 60;   /* tablet/orta telefon */
-	return 100;               /* desktop */
+	if (w < 420) return 42;
+	if (w < 720) return 60;
+	return 100;
 }
 function balloonTop() {
 	return $(window).width() < 720 ? 120 : 240;
@@ -96,16 +104,16 @@ $('document').ready(function () {
 		alignBalloonsCenter(vw, 500);
 	});
 
-	/* 1) Işıkları Aç */
+	/* 1) Işıkları Aç — peri ışıkları yanar */
 	$('#turn_on').click(function () {
-		$('#bulb_yellow').addClass('bulb-glow-yellow');
-		$('#bulb_red').addClass('bulb-glow-red');
-		$('#bulb_blue').addClass('bulb-glow-blue');
-		$('#bulb_green').addClass('bulb-glow-green');
-		$('#bulb_pink').addClass('bulb-glow-pink');
-		$('#bulb_orange').addClass('bulb-glow-orange');
+		$('.fairy-lights').addClass('on');
 		$('body').addClass('peach');
-		$(this).fadeOut('slow').delay(5000).promise().done(function () {
+
+		setTimeout(function () {
+			$('.fairy-lights').addClass('glow');
+		}, 1500);
+
+		$(this).fadeOut('slow').delay(3000).promise().done(function () {
 			$('#play').fadeIn('slow');
 		});
 	});
@@ -114,29 +122,22 @@ $('document').ready(function () {
 	$('#play').click(function () {
 		var audio = $('.song')[0];
 		audio.play();
-		$('#bulb_yellow').addClass('bulb-glow-yellow-after');
-		$('#bulb_red').addClass('bulb-glow-red-after');
-		$('#bulb_blue').addClass('bulb-glow-blue-after');
-		$('#bulb_green').addClass('bulb-glow-green-after');
-		$('#bulb_pink').addClass('bulb-glow-pink-after');
-		$('#bulb_orange').addClass('bulb-glow-orange-after');
-		$('body').css('backgroud-color', '#FFF');
 		$('body').addClass('peach-after');
-		$(this).fadeOut('slow').delay(6000).promise().done(function () {
+		$(this).fadeOut('slow').delay(4000).promise().done(function () {
 			$('#bannar_coming').fadeIn('slow');
 		});
 	});
 
-	/* 3) Süslemeleri Getir + Ayçiçeği bahçesi açılır */
+	/* 3) Süslemeleri Getir + Çiçek bahçesi açılır */
 	$('#bannar_coming').click(function () {
 		$('.bannar').addClass('bannar-come');
 		$('#garden').addClass('show');
-		$(this).fadeOut('slow').delay(6000).promise().done(function () {
+		$(this).fadeOut('slow').delay(4000).promise().done(function () {
 			$('#balloons_flying').fadeIn('slow');
 		});
 	});
 
-	/* Yedi balonun rastgele uçuş döngüleri — viewport'a göre */
+	/* Yedi balonun rastgele uçuş döngüleri */
 	function rL() { return $(window).width()  * 0.85 * Math.random(); }
 	function rT() { return $(window).height() * 0.45 * Math.random(); }
 	function loopOne()   { $('#b1').animate({ left: rL(), bottom: rT() }, 10000, loopOne);   }
@@ -177,7 +178,7 @@ $('document').ready(function () {
 		});
 	});
 
-	/* 7) Doğum Günün Kutlu Olsun: harfler sıralanır + kalpler yükselir */
+	/* 7) Doğum Günün Kutlu Olsun */
 	$('#wish_message').click(function () {
 		vw = $(window).width() / 2;
 		$('#b1,#b2,#b3,#b4,#b5,#b6,#b7').stop();
@@ -201,7 +202,7 @@ $('document').ready(function () {
 		});
 	});
 
-	/* 8) Sümşibumime: yıldızlı gece + düşen taç yaprakları + typewriter mesaj */
+	/* 8) Sümşibumime: yıldızlı gece + düşen taç yaprakları + mesaj */
 	$('#story').click(function () {
 		$(this).fadeOut('slow');
 		$('body').addClass('starry-night');
@@ -219,7 +220,6 @@ $('document').ready(function () {
 				i = i + 1;
 				$('.message p:nth-child(' + i + ')').fadeIn(1500).delay(3000);
 				if (i >= TOTAL) {
-					/* Son paragraf (imza) ekranda kalsın */
 					return;
 				} else {
 					msgLoop(i);
